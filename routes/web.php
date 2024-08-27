@@ -1,18 +1,16 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Article;
-use App\Models\Category;
-use App\Models\Tag;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home', [
-        'articles' => Article::query()->with(['category', 'tags'])->get(),
-        'tags' => Tag::all(),
-        'categories' => Category::all(),
-    ]);
-});
+Route::get('/', [ArticleController::class, 'index']);
+
+// search
+Route::get('/tags/{tag:name}', TagController::class);
+Route::get('/categories/{category:name}', CategoryController::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
