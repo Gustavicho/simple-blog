@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Article;
-use App\Models\Category;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,17 +16,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => 'password',
         ]);
 
-        $cat = Category::factory()->create();
-        $tags = Tag::factory()->count(3)->create();
-
-        $art = Article::factory()->create([
-            
-        ])
+        Article::factory()->create([
+            'user_id' => $user->id,
+        ])->addCategory('test')->addTag('tag1')->addTag('tag2');
     }
 }

@@ -18,7 +18,6 @@ class ArticleFactory extends Factory
     {
         return [
             'user_id' => 0,
-            'category_id' => 0,
             'title' => fake()->sentence(),
             'text' => fake()->text(),
         ];
