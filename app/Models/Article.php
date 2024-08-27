@@ -22,11 +22,14 @@ class Article extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function addCategory(string $name): void
+    public function addCategory(string $name): self
     {
         $category = Category::firstOrCreate(['name' => $name]);
 
         $this->category()->associate($category);
+        $this->save();
+
+        return $this;
     }
 
     public function tags(): BelongsToMany
@@ -34,10 +37,12 @@ class Article extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function addTag(string $name): void
+    public function addTag(string $name): self
     {
         $tag = Tag::firstOrCreate(['name' => $name]);
 
         $this->tags()->attach($tag);
+
+        return $this;
     }
 }
