@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ArticleController::class, 'index']);
+Route::get('/', [ArticleController::class, 'index'])->name('home');
 
 // search
 Route::get('/tags/{tag:name}', TagController::class);
