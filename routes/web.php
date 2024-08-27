@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
+Route::view('/about', 'about')->name('about');
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
 // search

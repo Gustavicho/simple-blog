@@ -21,17 +21,18 @@
 
             <div class="space-x-4 font-bold">
                 <x-nav-link href="/" :active="request()->is('/')">Aticles</x-nav-link>
-                <x-nav-link href="/about" :active="request()->is('/about')">About us</x-nav-link>
+                <x-nav-link href="/about" :active="request()->is('about')">About us</x-nav-link>
                 @auth
-                    <x-nav-link href="/articles" :active="request()->is('/articles')">My articles</x-nav-link>
+                    <x-nav-link href="/articles" :active="request()->routeIs('articles')">My articles</x-nav-link>
                 @endauth
             </div>
 
             <div class="flex gap-4">
                 @guest
-                    <x-nav-link href="/login" :active="request()->is('/login')">Login</x-nav-link>
+                    <x-nav-link href="/login">Login</x-nav-link>
                 @endguest
                 @auth
+                    <x-nav-link href="/articles/create" :active="request()->routeIs('articles.create')">Aticles</x-nav-link>
                     <x-dropdown.el>
                         <x-slot name="trigger">
                             <button>
