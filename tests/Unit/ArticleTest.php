@@ -15,7 +15,7 @@ it('belongs to a user', function () {
 
 it('belongs to a category', function () {
     $art = Article::factory()->create();
-    $art->addCategoty('test');
+    $art->addCategory('test');
 
     expect($art->category)->toBeInstanceOf(Category::class);
 });
