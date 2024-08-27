@@ -10,7 +10,7 @@
         default => ($classes .= ' text-xs px-2.5 py-0.5'),
     };
 
-    $link = $for . '/' . strtolower($tag->name);
+    $link = '/' . $for . '/' . strtolower($tag->name);
 @endphp
 
 <a {{ $attributes->merge(['class' => $classes, 'href' => $link]) }}>
