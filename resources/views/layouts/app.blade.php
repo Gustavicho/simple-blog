@@ -15,10 +15,10 @@
         <nav class="flex justify-between items-center py-4 mb-12 border-b border-white/15">
             <div>
                 <a href="/">
-                    LOGO
-                    {{-- <img src="{{ Vite::asset('resources/images/logo.svg') }}"> --}}
+                    <x-application-logo class="w-8 h-8 fill-current text-white" />
                 </a>
             </div>
+
             <div class="space-x-4 font-bold">
                 <x-nav-link href="/" :active="request()->is('/')">Aticles</x-nav-link>
                 <x-nav-link href="/about" :active="request()->is('/about')">About us</x-nav-link>
@@ -26,13 +26,28 @@
                     <x-nav-link href="/articles" :active="request()->is('/articles')">My articles</x-nav-link>
                 @endauth
             </div>
-            <div class="flex gap-4 font-bold">
+
+            <div class="flex gap-4">
                 @guest
-                    <x-nav-link href="/login" :active="request()->is('/login')">Login us</x-nav-link>
+                    <x-nav-link href="/login" :active="request()->is('/login')">Login</x-nav-link>
                 @endguest
                 @auth
-                    <a href="/articles/create">Post article</a>
-                    <a href="/profile">Profile</a></a>
+                    <x-dropdown.el>
+                        <x-slot name="trigger">
+                            <button>
+                                <x-nav-link>
+                                    {{ Auth::user()->name }}
+                                </x-nav-link>
+                            </button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-dropdown.link :href="route('profile.edit')">Profile</x-dropdown.link>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <x-dropdown.button>Logout</x-dropdown.button>
+                            </form>
+                        </x-slot>
+                    </x-dropdown.el>
                 @endauth
             </div>
         </nav>
