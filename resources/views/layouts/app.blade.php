@@ -20,19 +20,28 @@
             </div>
 
             <div class="space-x-4 font-bold">
-                <x-nav-link href="/" :active="request()->is('/')">Aticles</x-nav-link>
-                <x-nav-link href="/about" :active="request()->is('about')">About us</x-nav-link>
+                <x-nav-link href="{{ route('articles.index') }}" :active="request()->routeIs('articles.index')">
+                    Aticles
+                </x-nav-link>
+                <x-nav-link href="{{ route('about') }}" :active="request()->routeIs('about')">
+                    About us
+                </x-nav-link>
                 @auth
-                    <x-nav-link href="/articles" :active="request()->routeIs('articles')">My articles</x-nav-link>
+                    <x-nav-link href="{{ route('articles.index') }}" :active="request()->routeIs('articles.index')">
+                        My articles
+                    </x-nav-link>
                 @endauth
             </div>
 
             <div class="flex gap-4">
                 @guest
-                    <x-nav-link href="/login">Login</x-nav-link>
+                    <x-nav-link href="{{ route('login') }}">Login</x-nav-link>
                 @endguest
                 @auth
-                    <x-nav-link href="/articles/create" :active="request()->routeIs('articles.create')">Aticles</x-nav-link>
+                    <x-nav-link href="{{ route('articles.create') }}" :active="request()->routeIs('articles.create')">
+                        Post Article
+                    </x-nav-link>
+
                     <x-dropdown.el>
                         <x-slot name="trigger">
                             <button>
