@@ -14,7 +14,7 @@
             @endforeach
         </section>
 
-        <section>
+        <section class="space-y-6">
             <x-section-title>Articles</x-section-title>
             @foreach ($articles as $article)
                 <x-article-card :article="$article" />

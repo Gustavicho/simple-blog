@@ -8,7 +8,7 @@
                 <x-forms.field name="title" label="Title" />
             </div>
 
-            <x-forms.textarea name="content" label="Content" />
+            <x-forms.textarea name="text" label="Content" />
 
             @include('articles.partials.add-category')
             @include('articles.partials.add-tag')
