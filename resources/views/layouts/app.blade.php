@@ -10,16 +10,16 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-black text-white font-hanken-grotesk pb-12">
+<body class="bg-white text-black font-hanken-grotesk pb-12">
     <div class="px-10">
-        <nav class="flex justify-between items-center py-4 mb-12 border-b border-white/15">
+        <nav class="flex justify-between items-center py-4 mb-12 border-b border-gray/50">
             <div>
                 <a href="/">
-                    <x-application-logo class="w-8 h-8 fill-current text-white" />
+                    <x-application-logo class="w-12 h-12 fill-current text-clrPrimary" />
                 </a>
             </div>
 
-            <div class="space-x-4 font-bold">
+            <div class="space-x-4">
                 <x-nav-link href="{{ route('articles.index') }}" :active="request()->routeIs('articles.index')">
                     Aticles
                 </x-nav-link>

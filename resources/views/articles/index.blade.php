@@ -1,5 +1,6 @@
 <x-app-layout>
     <div class="space-y-12">
+        <x-gradient-title class="text-center">Find the perfect article!</x-gradient-title>
         <section>
             <x-section-title>Categories</x-section-title>
             @foreach ($categories as $category)
