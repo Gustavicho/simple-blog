@@ -1,14 +1,10 @@
-@php
-    $link = '/articles/' . $article->user->name . '/' . str_replace(' ', '-', $article->title);
-@endphp
-
 <x-panel class="justify-between gap-4">
     <div class="flex-1 flex flex-col">
         <p class="text-sm opacity-50">
             {{ $article->user->name }}
         </p>
 
-        <a href="{{ $link }}"
+        <a href="{{ route('articles.show', $article) }}"
             class="text-xl font-bold mt-2 mb-4 group-hover:text-blue-600 transition duration-300">
             {{ $article->title }}
         </a>
@@ -18,12 +14,16 @@
     </div>
 
     <div class="flex flex-col justify-between items-end gap-2">
-        <x-tag :tag="$article->category" for="categories" />
+        @if ($article->category !== null)
+            <x-tag :tag="$article->category" for="categories" />
+        @endif
 
-        <div>
-            @foreach ($article->tags as $tag)
-                <x-tag :$tag size="sm" />
-            @endforeach
-        </div>
+        @if ($article->tags->count() > 0)
+            <div>
+                @foreach ($article->tags as $tag)
+                    <x-tag :$tag size="sm" />
+                @endforeach
+            </div>
+        @endif
     </div>
 </x-panel>

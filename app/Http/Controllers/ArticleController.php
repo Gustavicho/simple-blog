@@ -30,16 +30,18 @@ class ArticleController extends Controller
     public function store()
     {
         $validatedData = request()->validate([
-            'title' => 'required',
-            'text' => 'required',
-            'category' => 'nullable',
-            'tags' => 'nullable',
+            'title' => ['required', 'string', 'max:255'],
+            'text' => ['required'],
+            'category' => ['nullable', 'string', 'max:255'],
+            'tags' => ['nullable'],
         ]);
 
         $validatedData['user_id'] = Auth::user()->id;
         $article = Article::create(Arr::except($validatedData, ['tags', 'category']));
 
-        $article->addCategory($validatedData['category']);
+        if ($validatedData['category'] !== null) {
+            $article->addCategory($validatedData['category']);
+        }
         if (request()->has('tags')) {
             $tags = explode(',', request('tags'));
             foreach ($tags as $tag) {
