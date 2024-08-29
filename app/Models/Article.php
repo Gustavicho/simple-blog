@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Article extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'text', 'user_id'];
+    protected $fillable = ['title', 'content', 'image', 'user_id'];
 
     public function user(): BelongsTo
     {
@@ -32,6 +32,19 @@ class Article extends Model
         return $this;
     }
 
+    public function updateCategory(string $name): self
+    {
+        $this->category()->dissociate();
+        $this->addCategory($name);
+
+        return $this;
+    }
+
+    public function hasCategory(): bool
+    {
+        return $this->category !== null;
+    }
+
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
@@ -44,5 +57,20 @@ class Article extends Model
         $this->tags()->attach($tag);
 
         return $this;
+    }
+
+    public function updateTag(array $names): self
+    {
+        $this->tags()->detach();
+        foreach ($names as $name) {
+            $this->addTag($name);
+        }
+
+        return $this;
+    }
+
+    public function hasTags(): bool
+    {
+        return $this->tags->isNotEmpty();
     }
 }
