@@ -5,7 +5,7 @@
         </p>
 
         <a href="{{ route('articles.show', $article) }}"
-            class="text-xl font-bold mt-2 mb-4 group-hover:text-blue-600 transition duration-300">
+            class="text-xl font-bold mt-2 mb-4 group-hover:text-clrPrimary transition duration-300">
             {{ $article->title }}
         </a>
         <p class="text-sm opacity-50 mt-auto">
