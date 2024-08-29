@@ -26,11 +26,6 @@
                 <x-nav-link href="{{ route('about') }}" :active="request()->routeIs('about')">
                     About us
                 </x-nav-link>
-                @auth
-                    <x-nav-link href="{{ route('articles.index') }}" :active="request()->routeIs('articles.index')">
-                        My articles
-                    </x-nav-link>
-                @endauth
             </div>
 
             <div class="flex gap-4">
