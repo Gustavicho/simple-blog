@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
@@ -21,35 +23,30 @@ class ArticleController extends Controller
 
     public function create()
     {
+        Gate::authorize('create', Article::class);
+
         return view('articles.create', [
             'tags' => Tag::all(),
             'categories' => Category::all(),
         ]);
     }
 
-    public function store()
+    public function store(StoreArticleRequest $request)
     {
-        $validatedData = request()->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'text' => ['required'],
-            'category' => ['nullable', 'string', 'max:255'],
-            'tags' => ['nullable'],
-        ]);
+        $validatedData = $request->validated();
 
-        $validatedData['user_id'] = Auth::user()->id;
-        $article = Article::create(Arr::except($validatedData, ['tags', 'category']));
+        $article = Auth::user()->articles->create(
+            $validatedData->except(['image', 'tags', 'category'])
+        );
 
-        if ($validatedData['category'] !== null) {
-            $article->addCategory($validatedData['category']);
-        }
-        if (request()->has('tags')) {
-            $tags = explode(',', request('tags'));
-            foreach ($tags as $tag) {
-                $article->addTag(trim($tag));
-            }
+        if ($validatedData['image'] !== null) {
+            $imgPath = request('image')->store('images', 'public');
+            $article->update(['image' => $imgPath]);
         }
 
-        return redirect('/');
+        $this->addTagAndCategory($article, $validatedData);
+
+        return redirect()->route('articles.show', $article->id);
     }
 
     public function show(Article $article)
@@ -59,36 +56,58 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
+        Gate::authorize('view', $article);
+
         return view('articles.edit', ['article' => $article]);
     }
 
-    public function update(Article $article)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
-        $validatedData = request()->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'text' => ['required'],
-            'category' => ['nullable', 'string', 'max:255'],
-            'tags' => ['nullable'],
-        ]);
+        $validatedData = $request->validated();
 
-        $article->update(Arr::except($validatedData, ['tags', 'category']));
-        if ($validatedData['category'] !== null) {
-            $article->addCategory($validatedData['category']);
-        }
-        if (request()->has('tags')) {
-            $tags = explode(',', request('tags'));
-            foreach ($tags as $tag) {
-                $article->addTag(trim($tag));
-            }
+        $article->update($validatedData->except(['image', 'tags', 'category']));
+
+        if ($validatedData['image'] !== null) {
+            $imgPath = request('image')->store('images', 'public');
+            $article->update(['image' => $imgPath]);
         }
 
-        return redirect('/articles/'.$article->id);
+        $this->updateTagAndCategory($article, $validatedData);
+
+        return redirect()->route('articles.show', $article->id);
     }
 
     public function destroy(Article $article)
     {
+        Gate::authorize('destroy', $article);
+
         $article->delete();
 
         return redirect('/');
+    }
+
+    protected function addTagAndCategory(Article $article, array $validatedData): void
+    {
+        if ($validatedData['category'] !== null) {
+            $article->addCategory($validatedData['category']);
+        }
+
+        if ($validatedData['tags'] !== null) {
+            $tags = explode(',', $validatedData['tags']);
+            foreach ($tags as $tag) {
+                $article->addTag(trim($tag));
+            }
+        }
+    }
+
+    protected function updateTagAndCategory(Article $article, array $validatedData): void
+    {
+        if ($validatedData['category'] !== null) {
+            $article->updateCategory($validatedData['category']);
+        }
+
+        if ($validatedData['tags'] !== null) {
+            $article->updateTag(explode(',', $validatedData['tags']));
+        }
     }
 }
