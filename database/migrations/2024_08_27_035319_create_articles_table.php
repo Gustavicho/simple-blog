@@ -17,7 +17,8 @@ return new class extends Migration {
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Category::class)->nullable();
             $table->string('title');
-            $table->text('text');
+            $table->text('content');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
