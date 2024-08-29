@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
+use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/about', 'about')->name('about');
@@ -15,19 +16,30 @@ Route::get('/categories/{category:name}', CategoryController::class);
 Route::controller(ArticleController::class)->group(function () {
     Route::get('/', 'index')->name('articles.index');
     Route::get('/articles/create', 'create')
-        ->middleware('auth')->name('articles.create');
+        ->middleware('auth')
+        ->can('create', Article::class)
+        ->name('articles.create');
 
     Route::post('/articles', 'store')
-        ->middleware('auth')->name('articles.store');
+        ->middleware('auth')
+        ->can('store')
+        ->name('articles.store');
 
     Route::get('/articles/{article}', 'show')->name('articles.show');
     Route::get('/articles/{article}/edit', 'edit')
-        ->middleware('auth')->name('articles.edit');
+        ->middleware('auth')
+        ->can('edit', Article::class)
+        ->name('articles.edit');
 
     Route::patch('/articles/{article}', 'update')
-        ->middleware('auth')->name('articles.update');
+        ->middleware('auth')
+        ->can('update', Article::class)
+        ->name('articles.update');
+
     Route::delete('/articles/{article}', 'destroy')
-        ->middleware('auth')->name('articles.destroy');
+        ->middleware('auth')
+        ->can('destroy', Article::class)
+        ->name('articles.destroy');
 });
 
 Route::middleware('auth')->group(function () {
