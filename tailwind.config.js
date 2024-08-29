@@ -18,11 +18,12 @@ export default {
             },
             
             colors: {
-                'black': '#333333',
-                'gray' : '#666666',
+                'black': '#333',
+                'gray' : '#999',
                 'white': '#f2f2f2',
-                'cyan' : '#6ce9c3',
                 'pink' : '#ff6b7f',
+                'clrPrimary' : '#ffc300',
+                'clrSecondary' : '#034efd',
             },
         },
     },
