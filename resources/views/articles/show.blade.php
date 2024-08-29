@@ -20,5 +20,16 @@
                 @endforeach
             @endif
         </div>
+
+        @if ($article->user->is(auth()->user()))
+            <div class="flex justify-start gap-4">
+                <x-nav-link href="{{ route('articles.edit', $article) }}">Edit</x-nav-link>
+                <form action="{{ route('articles.destroy', $article) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <x-forms.danger-button>Delete</x-forms.danger-button>
+                </form>
+            </div>
+        @endif
     </div>
 </x-app-layout>

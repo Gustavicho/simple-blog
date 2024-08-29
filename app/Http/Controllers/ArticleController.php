@@ -13,7 +13,7 @@ class ArticleController extends Controller
     public function index()
     {
         return view('articles.index', [
-            'articles' => Article::with(['category', 'tags'])->get(),
+            'articles' => Article::latest()->with(['category', 'tags'])->get(),
             'tags' => Tag::all(),
             'categories' => Category::all(),
         ]);
@@ -65,10 +65,22 @@ class ArticleController extends Controller
     public function update(Article $article)
     {
         $validatedData = request()->validate([
-            'title' => 'required',
-            'body' => 'required',
+            'title' => ['required', 'string', 'max:255'],
+            'text' => ['required'],
+            'category' => ['nullable', 'string', 'max:255'],
+            'tags' => ['nullable'],
         ]);
-        $article->update($validatedData);
+
+        $article->update(Arr::except($validatedData, ['tags', 'category']));
+        if ($validatedData['category'] !== null) {
+            $article->addCategory($validatedData['category']);
+        }
+        if (request()->has('tags')) {
+            $tags = explode(',', request('tags'));
+            foreach ($tags as $tag) {
+                $article->addTag(trim($tag));
+            }
+        }
 
         return redirect('/articles/'.$article->id);
     }
