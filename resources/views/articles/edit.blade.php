@@ -1,20 +1,22 @@
 <x-app-layout>
-    <x-section-title>Edit Article</x-section-title>
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white/10 rounded-lg">
-        <form method="post" action="{{ route('articles.update', $article) }}" class="py-8 px-4 space-y-10">
+    <x-gradient-title class="text-center mb-8">Edit: {{ $article->title }}</x-gradient-title>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-gray/20 rounded-lg">
+        <form method="post" action="{{ route('articles.update', $article->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
 
-            <div>
-                <x-forms.field name="title" label="Title" />
+            <div class="space-y-8 py-6 px-4">
+                <x-forms.input name="title" label="Title" />
+
+                <x-forms.textarea name="content" label="Content" />
+
+                @include('articles.partials.add-optionals')
+
+                <div>
+                    <x-nav-link href="{{ route('articles.show', $article) }}">Back</x-nav-link>
+                    <x-forms.button>Save</x-forms.button>
+                </div>
             </div>
-
-            <x-forms.textarea name="text" label="Content" />
-
-            @include('articles.partials.add-category')
-            @include('articles.partials.add-tag')
-
-            <x-forms.primary-button>Save</x-forms.primary-button>
         </form>
     </div>
 </x-app-layout>

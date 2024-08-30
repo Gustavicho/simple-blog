@@ -6,7 +6,7 @@
         </div>
 
         <p class="text-pretty bg-white/10 rounded-md px-4 py-6 max-w-[80ch] mx-auto">
-            {{ $article->text }}
+            {{ $article->content }}
         </p>
 
         <div class="flex justify-center gap-2 flex-wrap">
