@@ -22,23 +22,23 @@ Route::controller(ArticleController::class)->group(function () {
 
     Route::post('/articles', 'store')
         ->middleware('auth')
-        ->can('store')
+        ->can('store', Article::class)
         ->name('articles.store');
 
     Route::get('/articles/{article}', 'show')->name('articles.show');
     Route::get('/articles/{article}/edit', 'edit')
         ->middleware('auth')
-        ->can('edit', Article::class)
+        ->can('edit', 'article')
         ->name('articles.edit');
 
     Route::patch('/articles/{article}', 'update')
         ->middleware('auth')
-        ->can('update', Article::class)
+        ->can('update', 'article')
         ->name('articles.update');
 
     Route::delete('/articles/{article}', 'destroy')
         ->middleware('auth')
-        ->can('destroy', Article::class)
+        ->can('delete', 'article')
         ->name('articles.destroy');
 });
 
