@@ -24,9 +24,22 @@ class ArticlePolicy
     }
 
     /**
+     * Determine whether the user can create an article.
+     */
+    public function store(User $user): bool
+    {
+        return $user !== null;
+    }
+
+    /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Article $article): bool
+    {
+        return $user->id === $article->user_id;
+    }
+
+    public function edit(User $user, Article $article): bool
     {
         return $user->id === $article->user_id;
     }

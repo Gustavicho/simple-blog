@@ -7,8 +7,7 @@ use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Arr;
 
 class ArticleController extends Controller
 {
@@ -23,8 +22,6 @@ class ArticleController extends Controller
 
     public function create()
     {
-        Gate::authorize('create', Article::class);
-
         return view('articles.create', [
             'categories' => Category::all(),
         ]);
@@ -33,16 +30,12 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request)
     {
         $validatedData = $request->validated();
+        $validatedData['user_id'] = $request->user()->id;
+        $validatedData['image'] = null;
 
-        $article = Auth::user()->articles->create(
-            $validatedData->except(['image', 'tags', 'category'])
-        );
+        $article = Article::create(Arr::except($validatedData, ['image', 'tags', 'category']));
 
-        if ($validatedData['image'] !== null) {
-            $imgPath = request('image')->store('images', 'public');
-            $article->update(['image' => $imgPath]);
-        }
-
+        $this->addImage($article, $validatedData);
         $this->addTagAndCategory($article, $validatedData);
 
         return redirect()->route('articles.show', $article->id);
@@ -55,8 +48,6 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        Gate::authorize('view', $article);
-
         return view('articles.edit', [
             'article' => $article,
             'categories' => Category::all(),
@@ -66,14 +57,12 @@ class ArticleController extends Controller
     public function update(UpdateArticleRequest $request, Article $article)
     {
         $validatedData = $request->validated();
+        $validatedData['user_id'] = $request->user()->id;
+        $validatedData['image'] = null;
 
-        $article->update($validatedData->except(['image', 'tags', 'category']));
+        $article->update(Arr::except($validatedData, ['image', 'tags', 'category']));
 
-        if ($validatedData['image'] !== null) {
-            $imgPath = request('image')->store('images', 'public');
-            $article->update(['image' => $imgPath]);
-        }
-
+        $this->addImage($article, $validatedData);
         $this->updateTagAndCategory($article, $validatedData);
 
         return redirect()->route('articles.show', $article->id);
@@ -81,11 +70,17 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
-        Gate::authorize('destroy', $article);
-
         $article->delete();
 
-        return redirect('/');
+        return redirect()->route('articles.index');
+    }
+
+    protected function addImage(Article $article, array $validatedData): void
+    {
+        if ($validatedData['image']) {
+            $imgPath = request('image')->store('images', 'public');
+            $article->update(['image' => $imgPath]);
+        }
     }
 
     protected function addTagAndCategory(Article $article, array $validatedData): void
