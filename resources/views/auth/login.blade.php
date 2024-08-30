@@ -6,22 +6,24 @@
         @csrf
 
         <!-- Email Address -->
-        <div>
+        <x-forms.input name="email" label="Email" type="email" />
+        {{-- <div>
             <x-forms.label for="email" :value="__('Email')" />
             <x-forms.input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
                 autofocus autocomplete="username" />
             <x-forms.input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        </div> --}}
 
         <!-- Password -->
-        <div class="mt-4">
+        <x-forms.input name="password" label="Password" type="password" />
+        {{-- <div class="mt-4">
             <x-forms.label for="password" :value="__('Password')" />
 
             <x-forms.input id="password" class="block mt-1 w-full" type="password" name="password" required
                 autocomplete="current-password" />
 
             <x-forms.input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        </div> --}}
 
         <!-- Remember Me -->
         <div class="block mt-4">
@@ -40,9 +42,9 @@
                 </a>
             @endif
 
-            <x-forms.primary-button class="ms-3">
+            <x-forms.button class="ms-3">
                 {{ __('Log in') }}
-            </x-forms.primary-button>
+            </x-forms.button>
         </div>
     </form>
 </x-guest-layout>
