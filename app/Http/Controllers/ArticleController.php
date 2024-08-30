@@ -15,7 +15,7 @@ class ArticleController extends Controller
     public function index()
     {
         return view('articles.index', [
-            'articles' => Article::latest()->with(['category', 'tags'])->get(),
+            'articles' => Article::latest()->with(['category', 'tags', 'user'])->get(),
             'tags' => Tag::all(),
             'categories' => Category::all(),
         ]);
@@ -26,7 +26,6 @@ class ArticleController extends Controller
         Gate::authorize('create', Article::class);
 
         return view('articles.create', [
-            'tags' => Tag::all(),
             'categories' => Category::all(),
         ]);
     }
@@ -58,7 +57,10 @@ class ArticleController extends Controller
     {
         Gate::authorize('view', $article);
 
-        return view('articles.edit', ['article' => $article]);
+        return view('articles.edit', [
+            'article' => $article,
+            'categories' => Category::all(),
+        ]);
     }
 
     public function update(UpdateArticleRequest $request, Article $article)

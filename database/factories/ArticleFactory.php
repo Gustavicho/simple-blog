@@ -18,8 +18,8 @@ class ArticleFactory extends Factory
     {
         return [
             'user_id' => 0,
-            'title' => fake()->sentence(),
-            'content' => fake()->text(),
+            'title' => 'Welcome! this is my first project!!',
+            'content' => 'To login use the following credentials email: admin@admin.com password: password',
         ];
     }
 }
