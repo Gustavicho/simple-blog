@@ -17,9 +17,9 @@ class ArticleFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 0,
-            'title' => 'Welcome! this is my first project!!',
-            'content' => 'To login use the following credentials email: admin@admin.com password: password',
+            'user_id' => 1,
+            'title' => fake()->sentence(),
+            'content' => fake()->text(),
         ];
     }
 }

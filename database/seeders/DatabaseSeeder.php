@@ -22,8 +22,12 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
         ]);
 
-        Article::factory()->create([
+        Article::create([
             'user_id' => $user->id,
-        ])->addCategory('test')->addTag('tag1')->addTag('tag2');
+            'title' => 'Welcome! this is my first project!!',
+            'content' => 'To login use the following credentials email: admin@admin.com password: password',
+        ])->addCategory('Info')->addTag('PHP')->addTag('Laravel');
+
+        Article::factory(14)->create();
     }
 }
