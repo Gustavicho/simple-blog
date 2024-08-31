@@ -9,7 +9,7 @@ class CategoryController extends Controller
     public function __invoke(Category $category)
     {
         return view('results', [
-            'articles' => $category->articles()->with('category', 'tags')->get(),
+            'articles' => $category->articles()->with('category', 'tags')->simplePaginate(10),
         ]);
     }
 }

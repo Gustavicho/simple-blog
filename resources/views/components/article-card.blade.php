@@ -14,11 +14,11 @@
     </div>
 
     <div class="flex flex-col justify-between items-end gap-2">
-        @if ($article->category !== null)
+        @if ($article->hasCategory())
             <x-tag :tag="$article->category" for="categories" />
         @endif
 
-        @if ($article->tags->count() > 0)
+        @if ($article->hasTags())
             <div>
                 @foreach ($article->tags as $tag)
                     <x-tag :$tag size="sm" />

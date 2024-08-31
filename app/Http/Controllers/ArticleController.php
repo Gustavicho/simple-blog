@@ -14,7 +14,7 @@ class ArticleController extends Controller
     public function index()
     {
         return view('articles.index', [
-            'articles' => Article::latest()->with(['category', 'tags', 'user'])->get(),
+            'articles' => Article::latest()->with(['category', 'tags', 'user'])->simplePaginate(5),
             'tags' => Tag::all(),
             'categories' => Category::all(),
         ]);

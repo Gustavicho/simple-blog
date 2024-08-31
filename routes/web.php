@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TagController;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/about', 'about')->name('about');
 
 // search
+Route::get('/search', SearchController::class);
 Route::get('/tags/{tag:name}', TagController::class);
 Route::get('/categories/{category:name}', CategoryController::class);
 
