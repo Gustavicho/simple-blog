@@ -8,14 +8,6 @@ use App\Models\User;
 class ArticlePolicy
 {
     /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Article $article): bool
-    {
-        return $user->id === $article->user_id;
-    }
-
-    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
@@ -47,7 +39,7 @@ class ArticlePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Article $article): bool
+    public function destroy(User $user, Article $article): bool
     {
         return $user->id === $article->user_id;
     }
